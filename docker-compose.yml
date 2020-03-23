@@ -1,0 +1,24 @@
+version: '3.5'
+
+services:
+  postgres:
+    container_name: db
+    image: postgres:9.6.17-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-mysecretpassword}
+    volumes:
+       - pg-data:/data/postgres
+    #ports:
+    #  - "5432:5432"
+    restart: unless-stopped
+  myapp:
+    container_name: myapp
+    image: brunoe/jdbc-simple-docker
+#    build:
+#      context: ./
+#      dockerfile: Dockerfile
+    command: jdbc:postgresql://db:5432/postgres?user=postgres&password=mysecretpassword
+
+volumes:
+    pg-data:
